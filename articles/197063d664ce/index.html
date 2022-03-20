@@ -1,0 +1,264 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>【Skill】Python爬虫-以某旅游网站的美食，餐馆信息为例 | Potter's AWESOME Blog</title><meta name="keywords" content="爬虫"><meta name="author" content="Potter"><meta name="copyright" content="Potter"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Potter的Python爬虫范式 爬虫简介 Intro 惯例，开头先解释一下爬虫是个什么玩意儿。 爬虫，顾名思义，是用来爬东西的，再精确一点，就是用来自动爬取网页的内容的。 比如你想买个游戏机，你这个唰唰几行代码，就把淘宝京东前100的游戏机的价格，评分，简介都给爬下来了，然后你就乐呵呵地选了个性价比最高的。 再比如你要写毕业论文了，你再唰唰几行代码，把和自己课题相关的知网论文全爬下来了，你">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Skill】Python爬虫-以某旅游网站的美食，餐馆信息为例">
+<meta property="og:url" content="https://pottermoreiron.com/articles/197063d664ce/index.html">
+<meta property="og:site_name" content="Potter&#39;s AWESOME Blog">
+<meta property="og:description" content="Potter的Python爬虫范式 爬虫简介 Intro 惯例，开头先解释一下爬虫是个什么玩意儿。 爬虫，顾名思义，是用来爬东西的，再精确一点，就是用来自动爬取网页的内容的。 比如你想买个游戏机，你这个唰唰几行代码，就把淘宝京东前100的游戏机的价格，评分，简介都给爬下来了，然后你就乐呵呵地选了个性价比最高的。 再比如你要写毕业论文了，你再唰唰几行代码，把和自己课题相关的知网论文全爬下来了，你">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pottermoreiron.com/img/Sunset.JPG">
+<meta property="article:published_time" content="2021-11-26T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-12-10T12:53:56.815Z">
+<meta property="article:author" content="Potter">
+<meta property="article:tag" content="Potter">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pottermoreiron.com/img/Sunset.JPG"><link rel="shortcut icon" href="/img/favicon.jpg"><link rel="canonical" href="https://pottermoreiron.com/articles/197063d664ce/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '【Skill】Python爬虫-以某旅游网站的美食，餐馆信息为例',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-12-10 20:53:56'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.1"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/Avatar.JPG" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">34</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Alibi</span></a></div><div class="menus_item"><a class="site-page" href="/categories/balderdash/"><i class="fa-fw fas fa-poo"></i><span> Balderdash</span></a></div><div class="menus_item"><a class="site-page" href="/categories/chimera/"><i class="fa-fw fas fa-rss"></i><span> Chimera</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-hat-wizard"></i><span> Dally</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/epilogue/"><i class="fa-fw fas fa-hand-spock"></i><span> Epilogue</span></a></li><li><a class="site-page child" href="/categories/eureka/"><i class="fa-fw fas fa-quidditch"></i><span> Eureka</span></a></li><li><a class="site-page child" href="/categories/ethereal/"><i class="fa-fw fas fa-tape"></i><span> Ethereal</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-torii-gate"></i><span> Flamboyant</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/./img/Sunset.JPG')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Potter's AWESOME Blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Alibi</span></a></div><div class="menus_item"><a class="site-page" href="/categories/balderdash/"><i class="fa-fw fas fa-poo"></i><span> Balderdash</span></a></div><div class="menus_item"><a class="site-page" href="/categories/chimera/"><i class="fa-fw fas fa-rss"></i><span> Chimera</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-hat-wizard"></i><span> Dally</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/epilogue/"><i class="fa-fw fas fa-hand-spock"></i><span> Epilogue</span></a></li><li><a class="site-page child" href="/categories/eureka/"><i class="fa-fw fas fa-quidditch"></i><span> Eureka</span></a></li><li><a class="site-page child" href="/categories/ethereal/"><i class="fa-fw fas fa-tape"></i><span> Ethereal</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-torii-gate"></i><span> Flamboyant</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">【Skill】Python爬虫-以某旅游网站的美食，餐馆信息为例</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-11-26T16:00:00.000Z" title="发表于 2021-11-27 00:00:00">2021-11-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-12-10T12:53:56.815Z" title="更新于 2021-12-10 20:53:56">2021-12-10</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/chimera/">chimera</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="【Skill】Python爬虫-以某旅游网站的美食，餐馆信息为例"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><meta name="referrer" content="no-referrer"> 
+<h1>Potter的Python爬虫范式</h1>
+<h2 id="爬虫简介">爬虫简介</h2>
+<h3 id="Intro">Intro</h3>
+<p>惯例，开头先解释一下爬虫是个什么玩意儿。<br>
+爬虫，顾名思义，是用来爬东西的，再精确一点，就是用来自动爬取网页的内容的。<br>
+比如你想买个游戏机，你这个唰唰几行代码，就把淘宝京东前100的游戏机的价格，评分，简介都给爬下来了，然后你就乐呵呵地选了个性价比最高的。<br>
+再比如你要写毕业论文了，你再唰唰几行代码，把和自己课题相关的知网论文全爬下来了，你就乐呵呵地整了个优秀毕业论文出来。<br>
+再比如我看过一些爬虫的网课，老师去爬了几百张plmm的图片，对吧，当然，这个我们的趣味没有这么低级，我的意思是，你可以想搞啥就搞啥，有了技术，你就是自由的。</p>
+<h3 id="Why？">Why？</h3>
+<p>当然，这个时候就会有小可爱提出问题。<br>
+诶，你说，我们为什么要自动爬取呢，我不能打开网页好好看吗？我咔咔给它CtrlC+CtrlV复制到Excel里面不行吗？这是个很好的问题，我们知道要怎么做是很简单的，但知道为什么要这么做是更重要的。<br>
+首先呢，你看一两页还好，动动鼠标，翻翻页，轻轻松松，但你要翻个几百页呢，你是不是就给整歇菜了，说不定整个肌腱炎出来，就为了几张plmm的图片，不值当。<br>
+其次呢，你看网页，你舒适吗？先不说产品设计脑子瓦特了选的花里胡哨的辣眼睛配色，隔5秒就弹一个‘是兄弟就来砍我’的游戏广告，也给你整心态爆炸了嘛。<br>
+最后呢，用代码自动化组织数据格式，它不香吗？你还可以自己对数据进行操作再存储。还是你热爱复制粘贴？想要那种复制错了还得撤销重来的那种快感？</p>
+<h2 id="网页简介">网页简介</h2>
+<h3 id="Intro-2">Intro</h3>
+<p>简单来说呢，我们平常所用的网页或者app，虽然显示得<em>人模人样</em>的，但它实际上是由前端累死累活写的html,css,js渲染而成的。<br>
+<img src="/articles/197063d664ce/baidu.png" alt="baidu"><br>
+拿经典的‘百度一下’的主页来举例子，图里左下角所展示的就是这个网页的html源代码，红框框出来的代码就渲染了<strong>百度一下</strong>的蓝色按钮。而右下角的红框框出来这个按钮的样式，也就是css。</p>
+<h3 id="三剑客">三剑客</h3>
+<p>关于html,css,js，<em>前端三剑客</em>，我有空的话会开一个坑，主要这三个里任意挑一个出来都够我写很久，这个地方先简单说一下。<br>
+html负责页面有什么东西，比如这个地方你想要个按钮，那个地方你想要个输入框，诶，你还想要个背景图片，有什么玩意儿，就是html控制。<br>
+css负责这个东西要怎么显示，比如这个图片的大小，这一段文字的颜色，这个按钮在页面的位置，这些东西就是css控制。<br>
+js负责页面的交互，比如你点下这个按钮就开始搜索你的关键词。<br>
+上述的内容不是很准确，但也差不了太多。</p>
+<h3 id="复现？">复现？</h3>
+<p>而其实一个页面的这三部分，我们都是可以看到的，用Google浏览器右键检查，我们就可以看到元素对应的html和css，而点击控制台的来源，js也是可以看到的。<br>
+这时就会有小聪明说，诶呀我去，这页面的代码咱都可以拿到，那不就直接复制粘贴，分分钟几个淘宝京东，这写页面不是贼简单吗。<br>
+这个想法很好，毕竟万物始于模仿，但是很可惜这种方法对于一些简单的小网站可能好使，但对于这种比较有名的网站，基本复现不下来，因为我们能看到的代码是已经经过压缩，重编码的代码。<br>
+为了使js文件尽可能小，实际上的js源代码被进行了一系列的操作，例如变量换名，删除无用代码等等，虽然可能代码的本质操作没变，但已经变得极其难读懂了，跑起来出错你就没法debug了。<br>
+其次，html和css这两简单的你也可能会遇到一些看不懂的属性，因为现在复杂的网站很少两手一撸，直接写原生的三剑客，很多都会用前端框架来编写页面，例如尤大的Vue，Meta(Facebook)的React，框架的语法和原生语法虽然相似，但也是有很多不同的地方，最后我们F12检查看到的页面代码，实质上使框架的代码转变而来的。<br>
+但其实，复现一个页面的样式是很简单的，对于这样的大网站，难的往往是跟网络请求有关的部分和它背后的搜索，推荐算法。</p>
+<h2 id="正文">正文</h2>
+<h3 id="心路历程">心路历程</h3>
+<p>爬虫这玩意儿，我大一的时候就想玩玩，那个时候觉得这技术有点小酷，第一个想法是想爬爬识货的球鞋和卫衣，后来为啥没干我也忘了，可能那个时候忙着在辩论队里怼天怼地。<br>
+然后大二遇到疫情了，在家里没啥事，就开始学学爬虫了。<br>
+鄙人师承北京理工大学的嵩天老师，他的视频是我看过的十几个爬虫教学视频最好的，我印象很深的是老师没有一上来就教怎么爬，而是先教了网站的Robots协议，这个协议会告诉这个网站什么可以爬，什么不能爬，虽然基本所有网站的这个协议都说得是什么都不能爬hhhh。这是任何一个其他爬虫教学视频都没提到的一点，但我觉得这样的教学方式才是正确的，技术是把双刃剑，盗亦有道。<br>
+不过确实爬虫是违法的，但只要不将数据用于盈利，应该没啥大事，毕竟读书人的事，怎么能叫偷呢？<br>
+而且这老师用记事本写Python代码，实属是个狠人。<br>
+视频链接我就不放了，因为是搬运的，所以有时候会失效，大家直接去b站搜<strong>北理工 Python爬虫</strong>就行了。<br>
+我学完之后，先试了几个小项目，都跑得不错，然后就是大三的时候帮实验室爬古诗文的数据，和同学合作也完成了，虽然最后数据没派上用场。<br>
+然后就是最近这两天帮学长<strong>爬携程的美食和餐厅</strong>，这也是我写这篇博客的原因，因为我老是忘掉老师教的相关的代码，导致我每次一写爬虫，都需要重新看视频，但其实对于一般的任务，我所学到的爬虫代码都是有一个范式的，所以记录一下。</p>
+<h3 id="任务">任务</h3>
+<h4 id="需求">需求</h4>
+<p>①160个城市的前15个美食，以及哪里可以去吃的餐厅。<br>
+<img src="/articles/197063d664ce/Food.png" alt="food"><br>
+②160个城市的前15个餐厅，记录名字，人均，菜系，特色美食和评分。<br>
+<img src="/articles/197063d664ce/restaurantList.png" alt="restaurantList"><br>
+<img src="/articles/197063d664ce/restaurantDetail.png" alt="restaurantDetail"></p>
+<h4 id="配置">配置</h4>
+<p>Windows10，PyCharm，Python3.10。</p>
+<h4 id="库">库</h4>
+<p>request+BeautifulSoup</p>
+<h4 id="方法">方法</h4>
+<p><strong>爬虫=请求页面+提取数据+组织数据</strong><br>
+首先就来说说请求页面这个方法，这一段代码简洁美丽。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">getHTMLText</span>(<span class="params">url</span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># 伪装头</span></span><br><span class="line">        headers = &#123;</span><br><span class="line">            <span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) &#x27;</span></span><br><span class="line">                          <span class="string">&#x27;Chrome/63.0.3239.132 Safari/537.36 QIHU 360SE &#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment"># 第一个参数是你要访问的url,headers参数设置请求头，timeout参数设置连接超时的秒数，防止请求一直得不到回应，程序卡住。</span></span><br><span class="line">        r = requests.get(url, headers=headers, timeout=<span class="number">30</span>)</span><br><span class="line">        <span class="comment"># 网络请求的返回状态，200表示连接成功，继续执行代码，404表示失败，会转到&#x27;except&#x27;代码块</span></span><br><span class="line">        r.raise_for_status()</span><br><span class="line">        <span class="comment"># 改变返回内容的编码方式，防止乱码</span></span><br><span class="line">        r.encoding = r.apparent_encoding</span><br><span class="line">        <span class="keyword">return</span> r.text</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Network ERROR&quot;</span></span><br></pre></td></tr></table></figure>
+<p>首先我们会设置一个伪装头，这是因为如果我们直接用Python代码进行网络请求，网站就知道你小子使用Python在请求，你说说你，能自己访问的网页你偏要用Python来请求，你小子是不是想来爬爷的网站啊，我怎么能让你爬呢，那直接啪啪就给你来一个反爬，你就发现你访问不了网站了。<br>
+说实话也是，一方面网站的数据是人家辛辛苦苦收集的，一方面代码进行请求的速度很快，会对网站的服务器造成负担，人家不反你反谁啊。<br>
+但是没有关系，道高一尺魔高一丈，网站之所以知道你是用Python代码请求的，是因为你的User-Agent是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">User-Agent: &lt;span style=&quot;color:#ff0000;&quot;&gt;Python-urllib/3.6&lt;/span&gt;</span><br></pre></td></tr></table></figure>
+<p>这几个大大的字母不就说明了你是用Python代码请求的吗？那解决方法很简单，我们将这个User-Agent改成正常浏览器的不就行了。这就是我们在代码里设置的headers含义。<br>
+设置完后我们用request进行请求即可。<br>
+请求完后我们就会拿到返回的结果，实际上就是网页的源代码。<br>
+<img src="/articles/197063d664ce/request.png" alt="request"><br>
+但这玩意儿怎么搞，也许可以搞，但很麻烦，我们要如何方便地提取数据呢？请出我们第二位主角，BeautifulSoup。<br>
+这个库的名字十分的诗意，它是用来帮我们解析网页提取数据的，就像煲一锅美美的汤一样。<br>
+这玩意儿用起来很爽，就是函数有点多，我老是忘，但对于爬虫来说，我就只说说我常用的两个查找函数。<strong>select和findall</strong>。<br>
+哎我懒得说了，我贴一篇讲得很不错的博文。<br>
+<a target="_blank" rel="noopener" href="https://cuiqingcai.com/1319.html">https://cuiqingcai.com/1319.html</a><br>
+也不是我懒，是这种解释函数的东西或者说怎样使用啥库的东西没啥讲头，大家都是聪明人，看几眼就都懂了，没必要浪费时间是吧。<br>
+简单来说，提取数据的关键是找规律，有句话叫万物皆可爬，这是因为写页面的都是人，都想偷懒，所以他们会以一种规律去写页面，比如用同一种结构的标签包住我们想要的数据，那我们抓到这种类型的标签，提取出文本即可。说找规律吧确实很玄乎，纸上谈兵，我就拿抓美食这个页面打个样，大家学着点。</p>
+<h5 id="美食">美食</h5>
+<p>对于美食而言，我们需要爬160个城市前15的美食，并且对每个美食而言，我们需要到哪可以吃这项美食的餐厅。<br>
+从小到大，我们要爬160个城市，那搞懂一个城市就可以了，剩下的一个循环就搞定了。<br>
+<a target="_blank" rel="noopener" href="https://you.ctrip.com/fooditem/chengdu104.html">https://you.ctrip.com/fooditem/chengdu104.html</a><br>
+拿成都做个例子<br>
+<img src="/articles/197063d664ce/foodList.png" alt="foodList"><br>
+我们需要爬取这页的15个美食，首先我们就可以发现，这15个美食相当于15个item，它们在1个div里面，这个div的class是‘foodlist’，其次1个item里有美食的名字，图片，相关的餐厅。美食的名字被包在1个a标签里，而这1个a标签被包在1个dt标签里，而相关的餐厅被分别包在一个a标签里，这些a标签被包在一个p标签里，如果你仔细看完了上面的BeautifulSoup的教程，那你肯定就拿捏住了，规律给你找出来了，技术你会了，写代码这不是洒洒水的事情。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># get city&#x27;s food and related restaurants</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">handleFoodInfo</span>(<span class="params">city, html</span>):</span><br><span class="line">    food_one_city = []</span><br><span class="line">    soup = BeautifulSoup(html, <span class="string">&#x27;lxml&#x27;</span>)</span><br><span class="line">    food_list = soup.select(<span class="string">&#x27;.foodlist&#x27;</span>)</span><br><span class="line">    <span class="keyword">for</span> food_info <span class="keyword">in</span> food_list:</span><br><span class="line">        <span class="comment"># get &#x27;where to eat&#x27; data</span></span><br><span class="line">        restaurants_list = food_info.select(<span class="string">&#x27;p &gt; a&#x27;</span>)</span><br><span class="line">        arr = []</span><br><span class="line">        <span class="keyword">for</span> restaurant <span class="keyword">in</span> restaurants_list:</span><br><span class="line">            <span class="comment"># clean data</span></span><br><span class="line">            arr.append(re.sub(re_str, <span class="string">&#x27;&#x27;</span>, restaurant.string))</span><br><span class="line">        food = &#123;<span class="string">&#x27;name&#x27;</span>: re.sub(re_str, <span class="string">&#x27;&#x27;</span>, food_info.select(<span class="string">&#x27;dt &gt; a&#x27;</span>)[<span class="number">0</span>].string),</span><br><span class="line">                <span class="string">&#x27;restaurants&#x27;</span>: arr&#125;</span><br><span class="line">        food_one_city.append(food)</span><br><span class="line">    <span class="comment"># print(city, food_one_city)</span></span><br><span class="line">    <span class="keyword">return</span> food_one_city</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这段代码讲讲re.sub，这是一个跟正则相关的函数，因为最后的数据不要包含一些标点符号和奇奇怪怪的符号，所以写了个正则表达式，把相关的符号都替换成’'，相当于把这些符号都删除了，这其实就是清洗数据。<br>
+讲完了一个案例，找规律是不是很简单？为了大家理解得更清楚，我就勉为其难地再讲讲怎么爬餐厅的数据。</p>
+<h5 id="餐厅">餐厅</h5>
+<p>相比于美食。餐厅的页面需要我们多一步操作，因为一些我们想要的数据在餐厅的详情页，但目前我们能看到的餐厅的列表页。但思路很简单，因为列表页一定包含了餐厅的详情页地址，所以我们的第一步是爬取这些餐厅的详情页网址，再对详情页发出网络请求，拿到网络相应结果后，再去提取详情页上的数据。<br>
+<img src="/articles/197063d664ce/reList.png" alt="re_list"><br>
+理清了思路，我们继续来找规律，这详情网址都不用想，网址被1个a标签包住，这个a标签被1个dt标签包住，但是我再做的时候发现这样提取会有一些无关信息也会被提取，这也不用懵逼，你本来就是找规律在猜，所以结果与预料有出入也是很正常的。<br>
+有多的信息，那么就需要加限制条件，这个限制条件可以凭感觉加，也可以分析一波你想要的信息和无关信息的不同之处再加，我加了1个类名作为限制条件就ok了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">handleRestaurantInfo</span>(<span class="params">city, html</span>):</span><br><span class="line">    soup = BeautifulSoup(html, <span class="string">&#x27;lxml&#x27;</span>)</span><br><span class="line">    restaurant_detail_urls = []</span><br><span class="line">    urls = soup.select(<span class="string">&#x27;.rdetailbox dt &gt; a&#x27;</span>)</span><br><span class="line">    <span class="keyword">for</span> url <span class="keyword">in</span> urls:</span><br><span class="line">        restaurant_detail_urls.append(url[<span class="string">&#x27;href&#x27;</span>])</span><br><span class="line">    <span class="keyword">return</span> restaurant_detail_urls</span><br></pre></td></tr></table></figure>
+<p>拿到了所有的餐厅详情页网址，我们再来分析一个餐厅详情页应该怎么抓取。其实也很简单。<br>
+对于名字而言，文本被包在1个h1标签里，这个h1标签包在1个class=f_left的div标签里。<br>
+<img src="/articles/197063d664ce/reName.png" alt="reName"><br>
+对于价格而言，文本被包在1个class=price的em标签里，但我在爬的时候发现有些餐厅没有人均价格，这也没有关系，可以先判断一波抓没抓到这个em标签，没有结果就把价格记为’'。<br>
+<img src="/articles/197063d664ce/rePrice.png" alt="rePrice"><br>
+对于菜系而言，1个菜系的文本被包在1个a标签里，这些a标签被包在1个dd标签里，同时，有了上次的经验，我加了一个class进行限制。<br>
+<img src="/articles/197063d664ce/reCuisine.png" alt="reCuisine"><br>
+对于分数而言，四个分数都被包在1个class=score的span标签里，我们直接抓满足条件的标签，这些分数就是按顺序被抓到的，但会出现有些维度没有分数的情况，这也没有关系，赋值之前判断一下结果列表长度就行。<br>
+<img src="/articles/197063d664ce/reScore.png" alt="reScore"><br>
+对于特色美食而言，文本被包在1个p标签里，而这个p标签被包在1个class=text_style的div标签里。看着其实很简单，但有些餐厅它没有特色美食，有特别提示，它特别提示里的文本跟特色美食的文本被包裹的结构很相似，按最初一般抓出来的文本就是特别提示，这真给爷整的有点小懵。不过我还是解决了，大概还是抓了两种结构不同的地方进行限制。<br>
+<img src="/articles/197063d664ce/reSpecial.png" alt="reSpecial"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">handleRestaurantDetail</span>(<span class="params">html</span>):</span><br><span class="line">    soup = BeautifulSoup(html, <span class="string">&#x27;lxml&#x27;</span>)</span><br><span class="line">    cuisine = []</span><br><span class="line">    items = soup.select(<span class="string">&#x27;.s_sight_con dd &gt; a&#x27;</span>)</span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> items:</span><br><span class="line">        cuisine.append(re.sub(re_str, <span class="string">&#x27;&#x27;</span>, item.string))</span><br><span class="line">    restaurant = &#123;<span class="string">&#x27;name&#x27;</span>: re.sub(re_str, <span class="string">&#x27;&#x27;</span>, soup.select(<span class="string">&#x27;.f_left h1&#x27;</span>)[<span class="number">0</span>].text),</span><br><span class="line">                  <span class="string">&#x27;price&#x27;</span>: <span class="string">&#x27;&#x27;</span> <span class="keyword">if</span> <span class="keyword">not</span> soup.find(class_=<span class="string">&#x27;price&#x27;</span>) <span class="keyword">else</span> soup.find(class_=<span class="string">&#x27;price&#x27;</span>).string[<span class="number">1</span>:],</span><br><span class="line">                  <span class="string">&#x27;cuisine&#x27;</span>: cuisine,</span><br><span class="line">                  <span class="comment"># Notification error</span></span><br><span class="line">                  <span class="string">&#x27;specialities&#x27;</span>: <span class="string">&#x27;&#x27;</span> <span class="keyword">if</span> <span class="built_in">len</span>(soup.select(<span class="string">&#x27;.text_style p&#x27;</span>)) == <span class="number">0</span> <span class="keyword">or</span> <span class="built_in">len</span>(</span><br><span class="line">                      soup.select(<span class="string">&#x27;.text_style p span&#x27;</span>)) &gt; <span class="number">0</span> <span class="keyword">else</span> re.sub(re_str, <span class="string">&quot;&quot;</span>,</span><br><span class="line">                                                                         soup.select(<span class="string">&#x27;.text_style p&#x27;</span>)[</span><br><span class="line">                                                                             <span class="number">0</span>].string).split(<span class="string">&#x27;,&#x27;</span>),</span><br><span class="line">                  <span class="string">&#x27;overall_score&#x27;</span>: <span class="string">&#x27;&#x27;</span> <span class="keyword">if</span> <span class="built_in">len</span>(soup.select(<span class="string">&#x27;dt .score&#x27;</span>)) == <span class="number">0</span> <span class="keyword">else</span></span><br><span class="line">                  soup.select(<span class="string">&#x27;dt .score&#x27;</span>)[<span class="number">0</span>].text.split(<span class="string">&#x27;/&#x27;</span>)[<span class="number">0</span>],</span><br><span class="line">                  <span class="string">&#x27;taste_score&#x27;</span>: <span class="string">&#x27;&#x27;</span> <span class="keyword">if</span> <span class="built_in">len</span>(soup.select(<span class="string">&#x27;dd .score&#x27;</span>)) == <span class="number">0</span> <span class="keyword">else</span> soup.select(<span class="string">&#x27;dd .score&#x27;</span>)[<span class="number">0</span>].string,</span><br><span class="line">                  <span class="string">&#x27;environment_core&#x27;</span>: <span class="string">&#x27;&#x27;</span> <span class="keyword">if</span> <span class="built_in">len</span>(soup.select(<span class="string">&#x27;dd .score&#x27;</span>)) &lt;= <span class="number">1</span> <span class="keyword">else</span> soup.select(<span class="string">&#x27;dd .score&#x27;</span>)[<span class="number">1</span>].string,</span><br><span class="line">                  <span class="string">&#x27;service_score&#x27;</span>: <span class="string">&#x27;&#x27;</span> <span class="keyword">if</span> <span class="built_in">len</span>(soup.select(<span class="string">&#x27;dd .score&#x27;</span>)) &lt;= <span class="number">2</span> <span class="keyword">else</span> soup.select(<span class="string">&#x27;dd .score&#x27;</span>)[<span class="number">2</span>].string&#125;</span><br><span class="line">    <span class="keyword">return</span> restaurant</span><br></pre></td></tr></table></figure>
+<p>代码其他的部分就不讲了，很简单，一个是读csv文件的函数，csv文件里有所有城市的url，一个是parseHTML函数，就是组装上述的几个爬取函数，还有个主函数，为了防止爬得太快被封禁ip所以在主函数里加了一个睡眠函数，然后就随便写了点。</p>
+<h5 id="结果">结果</h5>
+<p>爬出来大概是这样的:<br>
+<img src="/articles/197063d664ce/res.png" alt="res"></p>
+<h5 id="代码">代码</h5>
+<p>完整代码见https://github.com/PottermoreIron/Crawler</p>
+<h2 id="其他">其他</h2>
+<p>其实这次爬虫的任务很简单，没有涉及到用户状态，也没有设计到很多的反爬机制，数据的规律也很简单，所以没有啥特别想说的。<br>
+其次呢，学爬虫可以同时简单学学前端知识，因为你爬的东西都是前端写的，只不过数据是后端传的嘛。所以如果你前端知识还行，那爬虫就比较简单。我记得我刚学的时候，看到html源代码就懵逼，因为看不懂啊，后来大二暑假学了一波前端，后面的项目也写了很多前端，就洒洒水了。当然，这是我一家之言，直接上手爬虫也挺简单的。<br>
+我这次的任务很简单，但实验室的另一个同学分到了爬景点标签的工作，他在爬得过程中，发现了一个很棘手的问题。<br>
+<strong>一个url显示的页面不一样</strong>。<br>
+按理来说，确实会出现这种情况，比如用了不同型号的电脑，不同浏览器，不同的客户端造成的页面适配。但问题在于那哥们儿用的是<em>同一台电脑，同一个浏览器</em>。<br>
+这不直接杀疯了，因为你的代码只能爬一种结构的页面，但你这个url可能导向完全不同的另一个页面，那还爬啥，还是你爬吧。<br>
+但作为一名练习时长三个月的前端实习生，我只好义不容辞地上去debug。我精确地用同一台电脑，同一个Wifi，同一个浏览器复现了一个url的两个不同页面。每次访问之前都清空了网络缓存。<br>
+我仔细对比了两个页面的请求头信息，发现只有一个不同。那就是两个页面的后端是用不同框架写的，一个是express，一个是\.NET，众所周知express比.NET更新，其次用express的页面的UI设计也要更新一点的。那么一个应该是新页面，一个是旧页面。<br>
+综上我判断携程这个页面正在做灰度测试，随机地将对这个页面的部分请求导向新页面的服务器进行测试。这个原因的可能性很大，因为正常网站弄成这样也太憨了。<br>
+但即使我弄清楚了原因，我也束手无策，因为我并不清楚这个<strong>随机</strong>的代码，即使我弄清楚了，我也没法在客户端进行有指向的请求。<br>
+所以更好的解决方式应该是爬APP的数据，但我之前没爬过，昨天试了一波，发现抓包工具抓不到我手机的包，等有空再试试，成功了的话就开下一篇手机爬虫的博客。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Potter</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://pottermoreiron.com/articles/197063d664ce/">https://pottermoreiron.com/articles/197063d664ce/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://pottermoreiron.com" target="_blank">Potter's AWESOME Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/./img/Sunset.JPG" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/articles/d12d06a090e1/"><img class="prev-cover" src="/./img/Sunset.JPG" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">【音频处理】不会有人可以用三角波写歌吧？</div></div></a></div><div class="next-post pull-right"><a href="/articles/c56a33fca619/"><img class="next-cover" src="/./img/Sunset.JPG" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">留学-文书-院校及专业</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/Avatar.JPG" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Potter</div><div class="author-info__description">Talk is cheap. Show me the code.</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">34</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/PottermoreIron"><i class="fab fa-github"></i><span>Github</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/PottermoreIron" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:yecao.scu@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">Potter's AWESOME Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">Potter的Python爬虫范式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%88%AC%E8%99%AB%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">爬虫简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Intro"><span class="toc-number">1.1.1.</span> <span class="toc-text">Intro</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Why%EF%BC%9F"><span class="toc-number">1.1.2.</span> <span class="toc-text">Why？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E9%A1%B5%E7%AE%80%E4%BB%8B"><span class="toc-number">1.2.</span> <span class="toc-text">网页简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Intro-2"><span class="toc-number">1.2.1.</span> <span class="toc-text">Intro</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E5%89%91%E5%AE%A2"><span class="toc-number">1.2.2.</span> <span class="toc-text">三剑客</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%8D%E7%8E%B0%EF%BC%9F"><span class="toc-number">1.2.3.</span> <span class="toc-text">复现？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A3%E6%96%87"><span class="toc-number">1.3.</span> <span class="toc-text">正文</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BF%83%E8%B7%AF%E5%8E%86%E7%A8%8B"><span class="toc-number">1.3.1.</span> <span class="toc-text">心路历程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%BB%E5%8A%A1"><span class="toc-number">1.3.2.</span> <span class="toc-text">任务</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9C%80%E6%B1%82"><span class="toc-number">1.3.2.1.</span> <span class="toc-text">需求</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE"><span class="toc-number">1.3.2.2.</span> <span class="toc-text">配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BA%93"><span class="toc-number">1.3.2.3.</span> <span class="toc-text">库</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E6%B3%95"><span class="toc-number">1.3.2.4.</span> <span class="toc-text">方法</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%BE%8E%E9%A3%9F"><span class="toc-number">1.3.2.4.1.</span> <span class="toc-text">美食</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%A4%90%E5%8E%85"><span class="toc-number">1.3.2.4.2.</span> <span class="toc-text">餐厅</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%BB%93%E6%9E%9C"><span class="toc-number">1.3.2.4.3.</span> <span class="toc-text">结果</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-number">1.3.2.4.4.</span> <span class="toc-text">代码</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-number">1.4.</span> <span class="toc-text">其他</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/articles/cbea6ff7bf2d/" title="【Daily LeetCode】2022-03-20"><img src="/./img/Sunset.JPG" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【Daily LeetCode】2022-03-20"/></a><div class="content"><a class="title" href="/articles/cbea6ff7bf2d/" title="【Daily LeetCode】2022-03-20">【Daily LeetCode】2022-03-20</a><time datetime="2022-03-19T16:00:00.000Z" title="发表于 2022-03-20 00:00:00">2022-03-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/articles/a93ce5de5d67/" title="【Daily LeetCode】2022-03-19"><img src="/./img/Sunset.JPG" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【Daily LeetCode】2022-03-19"/></a><div class="content"><a class="title" href="/articles/a93ce5de5d67/" title="【Daily LeetCode】2022-03-19">【Daily LeetCode】2022-03-19</a><time datetime="2022-03-18T16:00:00.000Z" title="发表于 2022-03-19 00:00:00">2022-03-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/articles/bbf80ed66f8c/" title="【Daily LeetCode】2022-03-18"><img src="/./img/Sunset.JPG" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【Daily LeetCode】2022-03-18"/></a><div class="content"><a class="title" href="/articles/bbf80ed66f8c/" title="【Daily LeetCode】2022-03-18">【Daily LeetCode】2022-03-18</a><time datetime="2022-03-17T16:00:00.000Z" title="发表于 2022-03-18 00:00:00">2022-03-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/articles/25e06dd0945f/" title="【Daily LeetCode】2022-03-17"><img src="/./img/Sunset.JPG" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【Daily LeetCode】2022-03-17"/></a><div class="content"><a class="title" href="/articles/25e06dd0945f/" title="【Daily LeetCode】2022-03-17">【Daily LeetCode】2022-03-17</a><time datetime="2022-03-16T16:00:00.000Z" title="发表于 2022-03-17 00:00:00">2022-03-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/articles/04fff38483cf/" title="【Daily LeetCode】2022-03-16"><img src="/./img/Sunset.JPG" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【Daily LeetCode】2022-03-16"/></a><div class="content"><a class="title" href="/articles/04fff38483cf/" title="【Daily LeetCode】2022-03-16">【Daily LeetCode】2022-03-16</a><time datetime="2022-03-15T16:00:00.000Z" title="发表于 2022-03-16 00:00:00">2022-03-16</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By Potter</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
